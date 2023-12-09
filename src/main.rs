@@ -1,3 +1,29 @@
+use std::env;
+use std::fs;
+
 fn main() {
-    println!("Hello, world!");
+    let args: Vec<String> = env::args().collect();
+
+    let config = Config::new(&args);
+
+    let contents = fs::read_to_string(config.file_path)
+    .expect("error is occured");
+
+    println!("Searching for {}", config.query);
+    // println!("File path is {}", config.file_path);
+    println!("{contents}");
+}
+
+struct Config {
+    query: String,
+    file_path: String,
+}
+
+impl Config {
+    fn new(args: &[String]) -> Config {
+        let query = args[1].clone();
+        let file_path = args[2].clone();
+
+        Config { query, file_path }
+    }
 }
